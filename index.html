@@ -120,6 +120,15 @@
   .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   textarea{min-height:96px;resize:vertical}
   .note{font-size:.8rem;color:#8fa8c0}
+  [hidden]{display:none !important}
+  .done{background:#0f2c47;border:1px solid #2a5a85;border-radius:16px;padding:28px 24px;text-align:center}
+  .done:focus{outline:none}
+  .done .tick{width:52px;height:52px;border-radius:50%;background:var(--accent);display:grid;place-items:center;margin:0 auto 14px}
+  .done .tick svg{width:28px;height:28px;stroke:var(--navy);fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+  .done h3{font-size:1.3rem;margin-bottom:8px}
+  .done p{color:#c5d7e8;margin-bottom:10px}
+  .done a,.err a{color:var(--accent);font-weight:600}
+  .err{background:#3b1d24;border:1px solid #9b3b4b;color:#ffd9de;border-radius:12px;padding:12px 14px;font-size:.92rem}
 
   footer{padding:34px 0;text-align:center;color:var(--muted);font-size:.9rem}
   footer strong{color:var(--ink)}
@@ -253,7 +262,13 @@
           </div>
         </div>
 
-        <form action="https://formspree.io/f/xeagpnyr" method="POST">
+        <form id="bookForm" action="https://formspree.io/f/xeagpnyr" method="POST">
+          <div id="formDone" class="done" role="status" tabindex="-1" hidden>
+            <div class="tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+            <h3>Your request was sent!</h3>
+            <p>Thanks, <span id="doneName">friend</span>. We got your repair request and will contact you within <strong>24 hours</strong> at the phone number you gave us.</p>
+            <p>Need it sooner? Call or text <a href="tel:+16134151016">613-415-1016</a>.</p>
+          </div>
           <div class="row">
             <div>
               <label for="name">Your name</label>
@@ -289,7 +304,8 @@
             <label for="msg">Anything else we should know?</label>
             <textarea id="msg" name="message" placeholder="Optional details"></textarea>
           </div>
-          <button class="btn" type="submit">Send request</button>
+          <p id="formError" class="err" role="alert" hidden>Sorry, your request didn't go through. Please call or text <a href="tel:+16134151016">613-415-1016</a> or email phonerescuemobile@gmail.com.</p>
+          <button class="btn" type="submit" id="sendBtn">Send request</button>
           <p class="note">We'll only use your details to arrange your repair.</p>
         </form>
       </div>
@@ -307,6 +323,35 @@
 
 <script>
   document.getElementById('yr').textContent = new Date().getFullYear();
+
+  // Send the booking form without leaving the page, then show a confirmation
+  (function () {
+    var form = document.getElementById('bookForm');
+    var btn = document.getElementById('sendBtn');
+    var err = document.getElementById('formError');
+    var done = document.getElementById('formDone');
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      err.hidden = true;
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
+      fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      }).then(function (res) {
+        if (!res.ok) { throw new Error('bad response'); }
+        var name = (form.elements['name'].value || '').trim().split(' ')[0];
+        if (name) { document.getElementById('doneName').textContent = name; }
+        Array.prototype.forEach.call(form.children, function (el) { el.hidden = (el !== done); });
+        done.focus();
+      }).catch(function () {
+        err.hidden = false;
+        btn.disabled = false;
+        btn.textContent = 'Send request';
+      });
+    });
+  })();
 </script>
 </body>
 </html>
