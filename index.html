@@ -120,6 +120,10 @@
   .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   textarea{min-height:96px;resize:vertical}
   .note{font-size:.8rem;color:#8fa8c0}
+  .contact .hours{margin-top:26px;padding-top:18px;border-top:1px solid #2a5a85}
+  .contact .hours h3{font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+  .contact .hours p{display:flex;gap:14px;color:#c5d7e8;font-size:.95rem;margin:0 0 4px}
+  .contact .hours span{min-width:88px;color:#fff;font-weight:600}
   [hidden]{display:none !important}
   .done{background:#0f2c47;border:1px solid #2a5a85;border-radius:16px;padding:28px 24px;text-align:center}
   .done:focus{outline:none}
@@ -260,6 +264,11 @@
             <a href="mailto:phonerescuemobile@gmail.com">Email: phonerescuemobile@gmail.com</a>
             <a href="https://wa.me/16134151016" target="_blank" rel="noopener">Message us on WhatsApp</a>
           </div>
+          <div class="hours">
+            <h3>Hours</h3>
+            <p><span>Mon &ndash; Fri</span> 9:00 AM &ndash; 9:00 PM</p>
+            <p><span>Sat &ndash; Sun</span> 11:00 AM &ndash; 5:00 PM</p>
+          </div>
         </div>
 
         <form id="bookForm" action="https://formspree.io/f/xeagpnyr" method="POST">
@@ -267,6 +276,7 @@
             <div class="tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
             <h3>Your request was sent!</h3>
             <p>Thanks, <span id="doneName">friend</span>. We got your repair request and will contact you within <strong>24 hours</strong> at the phone number you gave us.</p>
+            <p>We reply during business hours: Monday to Friday, 9:00 AM &ndash; 9:00 PM, and Saturday and Sunday, 11:00 AM &ndash; 5:00 PM.</p>
             <p>Need it sooner? Call or text <a href="tel:+16134151016">613-415-1016</a>.</p>
           </div>
           <div class="row">
